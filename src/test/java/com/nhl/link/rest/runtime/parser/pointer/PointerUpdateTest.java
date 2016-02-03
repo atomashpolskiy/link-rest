@@ -61,13 +61,12 @@ public class PointerUpdateTest extends JerseyTestOnDerby {
     public void testUpdate_EntityCollectionPointer() throws Exception {
 
         SQLTemplate insertE4_1 = new SQLTemplate(E4.class,
-				"INSERT INTO utest.e4 (id, c_varchar, c_int) values (1, 'xxx', 5)");
+				"INSERT INTO utest.e4 (c_varchar, c_int) values ('xxx', 5)");
         SQLTemplate insertE4_2 = new SQLTemplate(E4.class,
-				"INSERT INTO utest.e4 (id, c_varchar, c_int) values (2, 'yyy', 7)");
+				"INSERT INTO utest.e4 (c_varchar, c_int) values ('yyy', 7)");
 		runtime.newContext().performGenericQuery(insertE4_1);
         runtime.newContext().performGenericQuery(insertE4_2);
 
-        // TODO: Does not work. Investigate...
         E4 newObject = new E4();
         newObject.setCVarchar("abc");
         newObject.setCInt(9);
