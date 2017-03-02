@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.nhl.link.rest.LinkRestException;
 import com.nhl.link.rest.meta.LrAttribute;
 import com.nhl.link.rest.meta.LrEntity;
-import com.nhl.link.rest.meta.LrPersistentAttribute;
 import com.nhl.link.rest.meta.LrPersistentRelationship;
 import com.nhl.link.rest.meta.LrRelationship;
 import com.nhl.link.rest.parser.converter.JsonValueConverter;
@@ -73,7 +72,7 @@ public class EntityJsonTraverser {
 			LrAttribute attribute = entity.getAttribute(key);
 			if (attribute != null) {
 				JsonNode valueNode = objectNode.get(key);
-				Object value = extractValue(valueNode, attribute.getType());
+				Object value = attribute.extractValue(valueNode);
                 visitor.visitAttribute(key, value);
 				continue;
 			}
@@ -180,31 +179,9 @@ public class EntityJsonTraverser {
 	}
 
 	protected void extractPKPart(BiConsumer<String, Object> idConsumer, LrAttribute id, JsonNode valueNode) {
-
-		int type = Integer.MIN_VALUE;
 		String name = id.getName();
-
-		if (id instanceof LrPersistentAttribute) {
-			LrPersistentAttribute persistentId = (LrPersistentAttribute) id;
-			type = persistentId.getJdbcType();
-			name = persistentId.getDbAttribute().getName();
-		}
-
-		Object value = extractValue(valueNode, type);
-
+		Object value = id.extractValue(valueNode);
         idConsumer.accept(name, value);
-	}
-
-	protected Object extractValue(JsonNode valueNode, Class<?> javaType) {
-
-		JsonValueConverter converter = converterFactory.converter(javaType);
-
-		try {
-			return converter.value(valueNode);
-		} catch (Exception e) {
-			throw new LinkRestException(Response.Status.BAD_REQUEST,
-					"Incorrectly formatted value: '" + valueNode.asText() + "'", e);
-		}
 	}
 
 	protected Object extractValue(JsonNode valueNode, int type) {

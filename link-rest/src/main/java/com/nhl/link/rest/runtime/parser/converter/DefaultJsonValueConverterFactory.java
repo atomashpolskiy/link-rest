@@ -44,7 +44,12 @@ public class DefaultJsonValueConverterFactory implements IJsonValueConverterFact
 
 		this.convertersByJdbcType = new HashMap<>();
 		convertersByJdbcType.put(Types.BIGINT, LongConverter.converter());
+		convertersByJdbcType.put(Types.DATE, UtcDateConverter.converter());
+		convertersByJdbcType.put(Types.TIME, UtcDateConverter.converter());
 		convertersByJdbcType.put(Types.TIMESTAMP, UtcDateConverter.converter());
+		convertersByJdbcType.put(Types.TIME_WITH_TIMEZONE, UtcDateConverter.converter());
+		convertersByJdbcType.put(Types.TIMESTAMP_WITH_TIMEZONE, UtcDateConverter.converter());
+		convertersByJdbcType.put(Types.VARBINARY, Base64Converter.converter());
 	}
 
 	@Override
