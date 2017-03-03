@@ -24,6 +24,8 @@ import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.di.Module;
 import org.apache.cayenne.exp.Property;
 import org.apache.cayenne.exp.parser.ASTPath;
+import org.apache.cayenne.map.DbAttribute;
+import org.apache.cayenne.map.ObjAttribute;
 import org.apache.cayenne.map.ObjEntity;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -137,6 +139,16 @@ public class TestWithCayenneMapping {
 		@Override
 		public int getJdbcType() {
 			return jdbcType;
+		}
+
+		@Override
+		public ObjAttribute getObjAttribute() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public DbAttribute getDbAttribute() {
+			throw new UnsupportedOperationException();
 		}
 
 		@Override

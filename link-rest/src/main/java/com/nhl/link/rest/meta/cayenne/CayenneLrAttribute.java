@@ -1,9 +1,9 @@
 package com.nhl.link.rest.meta.cayenne;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.nhl.link.rest.meta.DefaultLrAttribute;
 import com.nhl.link.rest.meta.LrPersistentAttribute;
 import com.nhl.link.rest.parser.converter.JsonValueConverter;
+import org.apache.cayenne.map.DbAttribute;
 import org.apache.cayenne.map.ObjAttribute;
 import org.apache.cayenne.util.ToStringBuilder;
 
@@ -25,6 +25,16 @@ public class CayenneLrAttribute extends DefaultLrAttribute implements LrPersiste
 	@Override
 	public int getJdbcType() {
 		return objAttribute.getDbAttribute().getType();
+	}
+
+	@Override
+	public ObjAttribute getObjAttribute() {
+		return objAttribute;
+	}
+
+	@Override
+	public DbAttribute getDbAttribute() {
+		return objAttribute.getDbAttribute();
 	}
 
 	@Override
